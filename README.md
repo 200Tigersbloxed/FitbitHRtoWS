@@ -6,9 +6,9 @@ Setting up the WebSocket and Fitbit app requires **some** command-line experienc
 
 ## Notes
 
-+ Battery life will decrease significantly while using this. On a Versa 2, you should get around 45min-1hr.
-+ While you should be able to open the port to the world for everyone to see, it is not recommended. You should only open the port locally.
-+ HTTPS/WSS support is untested and may or may not work.
++ ~~Battery life will decrease significantly while using this. On a Versa 2, you should get around 45min-1hr.~~ Fixed in v1.1.0 Battery life on a Versa 2 only lost ~5% after 30min. of use.
++ While you should be able to open the port to the world for everyone to see, it is not recommended (at least without wss/https). You should only open the port locally.
++ HTTPS/WSS support is untested and may or may not work. You should only use HTTPS and WSS if opening the port globally.
 + Do not ask for support in the issues thread. Report bugs or code not working on an SDK (for example).
 + Device and Phone must be connected to cli at all times to keep connection to WebSocket.
 + Don't forget to change your buildTargets in your `package.json` file. https://dev.fitbit.com/build/guides/multiple-devices/
