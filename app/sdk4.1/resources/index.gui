@@ -1,0 +1,8 @@
+<svg class="background">
+  <rect width="100%" height="20" x="0" y="0" />
+  <text class="defaultText">HeartRateWebSocket v1.0.0</text>
+  <text class="defaultText">Connection Status:</text>
+  <text id="connection-status" class="defaultText">Please Wait...</text>
+  <text id="hrm-label" class="defaultText">Heart Rate:</text>
+  <text id="hrm-data" class="defaulText" />
+</svg>
