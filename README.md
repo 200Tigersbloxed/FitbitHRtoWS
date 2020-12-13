@@ -12,6 +12,7 @@ Setting up the WebSocket and Fitbit app requires **some** command-line experienc
 + Do not ask for support in the issues thread. Report bugs or code not working on an SDK (for example).
 + Device and Phone must be connected to cli at all times to keep connection to WebSocket.
 + Don't forget to change your buildTargets in your `package.json` file. https://dev.fitbit.com/build/guides/multiple-devices/
++ Default ports are `8000` for the web server and `8080` for the websocket.
 
 ## Prerequisites
 
