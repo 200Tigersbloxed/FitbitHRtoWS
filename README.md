@@ -11,6 +11,7 @@ Setting up the WebSocket and Fitbit app requires **some** command-line experienc
 + HTTPS/WSS support is untested and may or may not work.
 + Do not ask for support in the issues thread. Report bugs or code not working on an SDK (for example).
 + Device and Phone must be connected to cli at all times to keep connection to WebSocket.
++ Don't forget to change your buildTargets in your `package.json` file. https://dev.fitbit.com/build/guides/multiple-devices/
 
 ## Prerequisites
 
