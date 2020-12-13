@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Fitbit HRM</title>
+</head>
+<body style="background-color: blue;">
+
+<h1>Fitbit HRM Info</h1>
+<p> </p>
+<h2>Connection Status</h2>
+<p>Websocket: <a id="wsCSL">Please Wait...</a></p>
+<p>Fitbit: <a id="fbCSL">Please Wait...</a></p>
+<p> </p>
+<h2>Fitbit Status</h2>
+<p>Heartrate: <a id="hrL" style="color: red; font: bold; font-family: Arial, Helvetica, sans-serif;">0</a></p>
+
+<script>
+    // socket
+    var socket = new WebSocket("ws://localhost:8080/")
+    // document id's
+    var wsCSL = document.getElementById("wsCSL");
+    var fbCSL = document.getElementById("fbCSL");
+    var hrL = document.getElementById("hrL");
+    // variables
+    var wsConnected = false;
+    var fbConnected = false;
+    // hr
+    var hrG = "0";
+
+    // socket events
+    socket.onopen = function() {
+        wsConnected = true;
+        var sendmessage = {"message": "requestConnectData"}
+        var json = JSON.stringify(sendmessage);
+        socket.send(json)
+    };
+
+    socket.onclose = function(){
+        wsConnected = false;
+        socket.close();
+    }
+
+    socket.onmessage = function(evt) {
+        var jsonObject = JSON.parse(evt.data);
+        var message = jsonObject.message;
+        switch(message){
+            case "sendConnectData":
+                if(jsonObject.fbConnected == "yes"){
+                    fbConnected = true;
+                    hrG = jsonObject.hr;
+                }
+                else{
+                    fbConnected = false;
+                }
+                break;
+            case "updateHR":
+                hrG = jsonObject.hr;
+            default:
+                console.log(evt.data);
+                break;
+        }
+    }
+
+    // the interval
+    // updates every 1000ms
+    window.setInterval(function(){
+        if(wsConnected){
+            wsCSL.innerHTML = "Connected"
+            wsCSL.style.color = "#00ff00"
+        }
+        else{
+            wsCSL.innerHTML = "Disconnected"
+            wsCSL.style.color = "#ff0000"
+        }
+
+        if(fbConnected){
+            fbCSL.innerHTML = "Connected"
+            fbCSL.style.color = "#00ff00"
+        }
+        else{
+            fbCSL.innerHTML = "Disconnected"
+            fbCSL.style.color = "#ff0000"
+        }
+        hrL.innerHTML = hrG;
+        var sendmessage = {"message": "requestConnectData"}
+        var json = JSON.stringify(sendmessage);
+        socket.send(json)
+    }, 1000)
+</script>
+</body>
+</html>
