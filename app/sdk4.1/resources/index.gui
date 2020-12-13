@@ -4,5 +4,5 @@
   <text class="defaultText">Connection Status:</text>
   <text id="connection-status" class="defaultText">Please Wait...</text>
   <text id="hrm-label" class="defaultText">Heart Rate:</text>
-  <text id="hrm-data" class="defaulText" />
+  <text id="hrm-data" class="defaultText" />
 </svg>

@@ -1,7 +1,6 @@
 // setup the hrm
 import { HeartRateSensor } from "heart-rate";
 const hrm = new HeartRateSensor();
-hrm.start();
 
 let document = require("document");
 
@@ -31,10 +30,29 @@ messaging.peerSocket.onmessage = evt => {
   }
 }
 
+// remove screen timeout
+// Disable app timeout
+import { me } from "appbit";
+
+if (me.appTimeoutEnabled) {
+ console.log("Timeout is enabled");
+}
+
+me.appTimeoutEnabled = false; // Disable timeout
+
+if (!me.appTimeoutEnabled) {
+  console.log("Timeout is disabled");
+ }
+
+// setup local values
 hrmData.text = "--";
 var hr = "0";
 
-setInterval(function(){
+setInterval(async function(){
+  hrm.start();
+  await setTimeout(() => {
+    
+  }, 1000);
   if(HeartRateSensor){
     var data = {
       hrm: {
@@ -54,4 +72,5 @@ setInterval(function(){
     var message = JSON.stringify(object)
     messaging.peerSocket.send(message)
   }
+  hrm.stop();
 }, 1000)
