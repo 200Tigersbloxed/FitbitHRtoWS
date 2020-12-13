@@ -10,6 +10,7 @@ Setting up the WebSocket and Fitbit app requires **some** command-line experienc
 + While you should be able to open the port to the world for everyone to see, it is not recommended. You should only open the port locally.
 + HTTPS/WSS support is untested and may or may not work.
 + Do not ask for support in the issues thread. Report bugs or code not working on an SDK (for example).
++ Device and Phone must be connected to cli at all times to keep connection to WebSocket.
 
 ## Prerequisites
 
