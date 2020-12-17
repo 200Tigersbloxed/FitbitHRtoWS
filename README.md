@@ -4,6 +4,20 @@ Send your Fitbit's Heart Rate data to a Websocket
 ## IMPORTANT
 Setting up the WebSocket and Fitbit app requires **some** command-line experience and basic coding experience. If you can't set this up on your own, ask for help before you break something.
 
+## Support
+Below is a table of device support
+
+SDK | Device | Tested | Working
+--- | --- | --- | ---
+SDK4 | Fitbit Ionic | ❌ | `-`
+SDK4 | Fitbit Versa | ❌ | `-`
+SDK4 | Fitbit Versa Lite | ❌ | `-`
+SDK4 | Fitbit Versa 2 | ✔️ | ✔️ *(SDK 4.1.0)*
+SDK5 | Fitbit Versa 3 | ❌ | `-`
+SDK5 | Fitbit Sense | ❌ | `-`
+
+*Just because a device isn't tested, doesn't mean it won't work. Feel free to test and submit a PR if you've confirmed a device to work.*
+
 ## Notes
 
 + ~~Battery life will decrease significantly while using this. On a Versa 2, you should get around 45min-1hr.~~ Fixed in v1.1.0 Battery life on a Versa 2 only lost ~5% after 30min. of use.
