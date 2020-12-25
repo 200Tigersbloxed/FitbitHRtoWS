@@ -1,7 +1,12 @@
-const wsUri = "ws://192.168.1.1:8080";
+// import settings
+import { settingsStorage } from "settings";
+
+var wsuris = JSON.parse(settingsStorage.getItem("wsUriSettings"))
+var sps = JSON.parse(settingsStorage.getItem("serverPassSettings"))
+const wsUri = wsuris.name;
 const websocket = new WebSocket(wsUri);
-const serverPassword = "CHANGEME";
-const generatedPasswordLength = 50
+const serverPassword = sps.name;
+const generatedPasswordLength = 50;
 
 // to prevent randos from disconnecting your fitbit, the fitbit will create a password
 function generatePassword(length) {
@@ -34,7 +39,6 @@ messaging.peerSocket.onmessage = evt => {
     }
 }
 
-// web socket stuff
 websocket.addEventListener("open", onOpen);
 websocket.addEventListener("close", onClose);
 
@@ -51,6 +55,16 @@ function onOpen(evt) {
         var message = JSON.stringify(object)
         messaging.peerSocket.send(message)
     }
+    else{
+        var theint = setInterval(function(){
+            if(messaging.peerSocket.readyState === messaging.peerSocket.OPEN){
+                var object = {"message": "changeSLT", "ConnectionStatus": "open"}
+                var message = JSON.stringify(object)
+                messaging.peerSocket.send(message)
+                clearInterval(theint)
+            }
+        }, 1000)
+    }
 }
 
 function onClose() {
@@ -65,6 +79,16 @@ function onClose() {
         var object = {"message": "changeSLT", "ConnectionStatus": "closed"}
         var message = JSON.stringify(object)
         messaging.peerSocket.send(message)
+    }
+    else{
+        var theint = setInterval(function(){
+            if(messaging.peerSocket.readyState === messaging.peerSocket.OPEN){
+                var object = {"message": "changeSLT", "ConnectionStatus": "closed"}
+                var message = JSON.stringify(object)
+                messaging.peerSocket.send(message)
+                clearInterval(theint)
+            }
+        }, 1000)
     }
 }
 
