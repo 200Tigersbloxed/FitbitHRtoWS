@@ -27,6 +27,7 @@ SDK5 | Fitbit Sense | ❌ | `-`
 + ~~Device and Phone must be connected to cli at all times to keep connection to WebSocket.~~ Once the app is sideloaded to the fitbit watch, the CLI does not have to be connected to the phone or device, only the Fitbit app and mobile app have to be open.
 + Don't forget to change your buildTargets in your `package.json` file. https://dev.fitbit.com/build/guides/multiple-devices/
 + Default ports are `8000` for the web server and `8080` for the websocket.
++ Settings can be found by going to `Today>Account>[Your Device]>Developer Menu>[The Sideloaded App]>Settings`
 
 ## Prerequisites
 
@@ -100,7 +101,7 @@ A: a (or you can select your device)
 
 Copy all **folders** from `app/sdk[target sdk version]/` and paste them into the directory. **DO NOT COPY `package.json` YET!**
 
-Navigate into `app/sdk[target version]/companion`, open `index.js` in any text editor and then change the `wsUri` (const) to the WebSocket address that the WebSocket is running on. (EX: address is 192.168.1.201:8080 `const wsUri = "ws://192.168.1.201:8080";`) Navigate back to `app/sdk[target version]/`
+~~Navigate into `app/sdk[target version]/companion`, open `index.js` in any text editor and then change the `wsUri` (const) to the WebSocket address that the WebSocket is running on. (EX: address is 192.168.1.201:8080 `const wsUri = "ws://192.168.1.201:8080";`) Navigate back to `app/sdk[target version]/`~~ Values can now be changed through settings. See notes.
 
 ### Step 5
 
