@@ -1,4 +1,6 @@
 # FitbitHRtoWS
+![fitbithrtowslogo](https://i.imgur.com/PYGgIym.png)
+
 Send your Fitbit's Heart Rate data to a Websocket
 
 ## IMPORTANT
