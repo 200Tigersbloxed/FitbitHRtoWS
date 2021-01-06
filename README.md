@@ -30,6 +30,7 @@ SDK5 | Fitbit Sense | ❌ | `-`
 + Don't forget to change your buildTargets in your `package.json` file. https://dev.fitbit.com/build/guides/multiple-devices/
 + Default ports are `8000` for the web server and `8080` for the websocket.
 + Settings can be found by going to `Today>Account>[Your Device]>Developer Menu>[The Sideloaded App]>Settings`
++ Battery will decrease significantly when the watch is connected to the CLI. (Connected to Debugger) [After sideloading, you should only need to have the phone app open, and the watch connected to your phone over bluetooth]
 
 ## Prerequisites
 
