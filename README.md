@@ -22,11 +22,10 @@ SDK5 | Fitbit Sense | ❌ | `-`
 
 ## Notes
 
-+ ~~Battery life will decrease significantly while using this. On a Versa 2, you should get around 45min-1hr.~~ Fixed in v1.1.0 Battery life on a Versa 2 only lost ~5% after 30min. of use.
 + While you should be able to open the port to the world for everyone to see, it is not recommended (at least without wss/https). You should only open the port locally.
 + HTTPS/WSS support is untested and may or may not work. You should only use HTTPS and WSS if opening the port globally.
 + Do not ask for support in the issues thread. Report bugs or code not working on an SDK (for example).
-+ ~~Device and Phone must be connected to cli at all times to keep connection to WebSocket.~~ Once the app is sideloaded to the fitbit watch, the CLI does not have to be connected to the phone or device, only the Fitbit app and mobile app have to be open.
++ Once the app is sideloaded to the fitbit watch, the CLI does not have to be connected to the phone or device, only the Fitbit app and mobile app have to be open.
 + Don't forget to change your buildTargets in your `package.json` file. https://dev.fitbit.com/build/guides/multiple-devices/
 + Default ports are `8000` for the web server and `8080` for the websocket.
 + Settings can be found by going to `Today>Account>[Your Device]>Developer Menu>[The Sideloaded App]>Settings`
