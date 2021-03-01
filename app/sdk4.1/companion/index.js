@@ -3,25 +3,27 @@ import { settingsStorage } from "settings";
 
 var wsuris = JSON.parse(settingsStorage.getItem("wsUriSettings"))
 var sps = JSON.parse(settingsStorage.getItem("serverPassSettings"))
+var wis = JSON.parse(settingsStorage.getItem("lowInterval"))
 const wsUri = wsuris.name;
 const websocket = new WebSocket(wsUri);
 const serverPassword = sps.name;
 const generatedPasswordLength = 50;
 
 // to prevent randos from disconnecting your fitbit, the fitbit will create a password
+// this only works well over WSS and HTTPS
 function generatePassword(length) {
     var charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789;:-=",
     retVal = "";
-for (var i = 0, n = charset.length; i < length; ++i) {
-    retVal += charset.charAt(Math.floor(Math.random() * n));
-}
-return retVal;
+    for (var i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+    }
+    return retVal;
 }
 var password = generatePassword(generatedPasswordLength)
 
 // web socket value
 var connected = false;
-var hr = "69";
+var hr = "---";
 
 // setup messaging for transferring values to companion
 import * as messaging from "messaging";
@@ -37,6 +39,25 @@ messaging.peerSocket.onmessage = evt => {
             console.log("Unidentified Message: " + message)
             break;
     }
+}
+
+var waitInt = 1000;
+if(wis){waitInt = 500}
+
+if(messaging.peerSocket.readyState === messaging.peerSocket.OPEN){
+    var object = {"message": "sendInterval", "int": waitInt}
+    var message = JSON.stringify(object)
+    messaging.peerSocket.send(message)
+}
+else{
+    var theintp2 = setInterval(function(){
+        if(messaging.peerSocket.readyState === messaging.peerSocket.OPEN){
+            var object = {"message": "sendInterval", "int": waitInt}
+            var message = JSON.stringify(object)
+            messaging.peerSocket.send(message)
+            clearInterval(theintp2)
+        }
+    }, 1000)
 }
 
 websocket.addEventListener("open", onOpen);
@@ -63,7 +84,7 @@ function onOpen(evt) {
                 messaging.peerSocket.send(message)
                 clearInterval(theint)
             }
-        }, 1000)
+        }, waitInt)
     }
 }
 
@@ -88,7 +109,7 @@ function onClose() {
                 messaging.peerSocket.send(message)
                 clearInterval(theint)
             }
-        }, 1000)
+        }, waitInt)
     }
 }
 
@@ -102,4 +123,4 @@ setInterval(function(){
       var json = JSON.stringify(sendmessage);
       websocket.send(json)
     }
-  }, 1000);
+}, waitInt);

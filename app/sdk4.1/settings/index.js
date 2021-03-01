@@ -11,6 +11,10 @@ function MainSettings(props) {
             settingsKey="serverPassSettings"
             label="Server Password"
           >CHANGEME</TextInput>
+          <Toggle
+            settingsKey="lowInterval"
+            label="Low Interval Update"
+          ></Toggle>
         </Section>
       </Page>
     );
