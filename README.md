@@ -34,4 +34,4 @@ SDK5 | Fitbit Sense | ❌ | `-`
 ## Setup
 
 For info on how to setup, please see the documentation at:
-https://docs.fortnite.lol/en/fitbithrtows
+https://github.com/200Tigersbloxed/FitbitHRtoWS/wiki/Setup
