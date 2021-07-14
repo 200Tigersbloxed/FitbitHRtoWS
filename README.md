@@ -3,6 +3,10 @@
 
 Send your Fitbit's Heart Rate data to a Websocket
 
+# BEFORE DOING ANYTHING READ THIS SETUP GUIDE SO YOU ACTUALLY KNOW WHAT YOU'RE DOING!!!
+
+https://github.com/200Tigersbloxed/FitbitHRtoWS/wiki/Setup
+
 ## IMPORTANT
 Setting up the WebSocket and Fitbit app requires **some** command-line experience and basic coding experience. If you can't set this up on your own, ask for help before you break something.
 
@@ -30,8 +34,3 @@ SDK5 | Fitbit Sense | ❌ | `-`
 + Default ports are `8000` for the web server and `8080` for the websocket.
 + Settings can be found by going to `Today>Account>[Your Device]>Developer Menu>[The Sideloaded App]>Settings`
 + Battery will decrease significantly when the watch is connected to the CLI. (Connected to Debugger) [After sideloading, you should only need to have the phone app open, and the watch connected to your phone over bluetooth]
-
-## Setup
-
-For info on how to setup, please see the documentation at:
-https://github.com/200Tigersbloxed/FitbitHRtoWS/wiki/Setup
