@@ -1,0 +1,5 @@
+{
+    "httpport": 8000,
+    "wsport": 8080,
+    "serverPassword": "CHANGEME"
+}

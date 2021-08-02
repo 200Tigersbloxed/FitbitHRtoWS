@@ -19,6 +19,9 @@
       "access_internet"
     ],
     "buildTargets": [
+      "higgs",
+      "meson",
+      "gemini",
       "mira"
     ],
     "i18n": {},

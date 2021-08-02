@@ -1,0 +1,26 @@
+{
+  "devDependencies": {
+    "@fitbit/sdk": "~5.0.0"
+  },
+  "fitbit": {
+    "appUUID": "",
+    "appType": "app",
+    "appDisplayName": "FitbitHRtoWS",
+    "iconFile": "resources/icon.png",
+    "wipeColor": "#ff5722",
+    "requestedPermissions": [
+      "access_heart_rate",
+      "access_internet"
+    ],
+    "buildTargets": [
+      "atlas",
+      "vulcan"
+    ],
+    "i18n": {
+      "en-US": {
+        "name": "FitbitHRtoWS"
+      }
+    },
+    "defaultLanguage": "en-US"
+  }
+}

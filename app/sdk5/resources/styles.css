@@ -1,0 +1,24 @@
+.defaultText {
+  font-size: 32;
+  font-family: System-Regular;
+  font-weight: regular;
+  y: $+10;
+  fill: white;
+}
+
+.heartrate {
+  font-size: 32;
+  font-family: SystemRegular;
+  font-weight: bold;
+  color: red;
+}
+
+.background {
+  width: 100%;
+  height: 100%;
+  fill: blue;
+}
+
+#background {
+  fill:purple;
+}
