@@ -8,7 +8,9 @@ Send your Fitbit's Heart Rate data to a Websocket
 https://github.com/200Tigersbloxed/FitbitHRtoWS/wiki/Setup
 
 ## IMPORTANT
-Setting up the WebSocket and Fitbit app requires **some** command-line experience and basic coding experience. If you can't set this up on your own, ask for help before you break something.
+~~Setting up the WebSocket and Fitbit app requires **some** command-line experience and basic coding experience. If you can't set this up on your own, ask for help before you break something.~~
+
+v1.4.0+ simplifies the setup, please read the Setup Guide linked above
 
 ## Support
 Below is a table of device support
