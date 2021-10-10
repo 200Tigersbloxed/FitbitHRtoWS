@@ -15,6 +15,14 @@ function MainSettings(props) {
             settingsKey="lowInterval"
             label="Low Interval Update"
           ></Toggle>
+          <Toggle
+            settingsKey="PublicServer"
+            label="Public Server"
+          ></Toggle>
+          <TextInput
+            settingsKey="PublicServerCode"
+            label="Public Server Code (Letters only!)"
+          >CHANGEME</TextInput>
         </Section>
       </Page>
     );

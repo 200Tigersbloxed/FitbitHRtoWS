@@ -3,7 +3,7 @@
     "@fitbit/sdk": "~5.0.0"
   },
   "fitbit": {
-    "appUUID": "",
+    "appUUID": "9cba4c69-c895-4ff1-b6a6-b0b52948fdcc",
     "appType": "app",
     "appDisplayName": "FitbitHRtoWS",
     "iconFile": "resources/icon.png",

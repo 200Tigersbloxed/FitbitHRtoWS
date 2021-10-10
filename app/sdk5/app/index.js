@@ -14,6 +14,10 @@ let document = require("document");
 
 let hrmData = document.getElementById("hrm-data");
 let statusLabel = document.getElementById("connection-status");
+let pstBCG = document.getElementsByClassName("background");
+
+let psc_sep = document.getElementById("psc-sep");
+let psc = document.getElementById("psc");
 
 // setup messaging for transferring values to companion
 import * as messaging from "messaging";
@@ -40,6 +44,23 @@ messaging.peerSocket.onmessage = evt => {
       break;
     case "sendInterval":
       waitInt = Number(jsonObject.int)
+      break;
+    case "sendPST":
+      console.log("sendPST: " + jsonObject.bool)
+      if(jsonObject.bool){
+        for(var counter = 0; counter < pstBCG.length; counter++){
+          pstBCG[counter].style.fill = "purple";
+        }
+        psc_sep.text = "-----";
+        psc.text = jsonObject.code;
+      }
+      else{
+        for(var counter = 0; counter < pstBCG.length; counter++){
+          pstBCG[counter].style.fill = "blue";
+        }
+        psc_sep.text = "";
+        psc.text = "";
+      }
       break;
     default:
       console.log("Unidentified Message: " + message)
@@ -91,4 +112,4 @@ var setupInterval = setInterval(function(){
       }
     }, waitInt)
   }
-}, 1000)
+}, 100)

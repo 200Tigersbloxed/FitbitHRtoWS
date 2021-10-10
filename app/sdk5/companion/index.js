@@ -4,9 +4,15 @@ import { settingsStorage } from "settings";
 var wsuris = JSON.parse(settingsStorage.getItem("wsUriSettings"))
 var sps = JSON.parse(settingsStorage.getItem("serverPassSettings"))
 var wis = JSON.parse(settingsStorage.getItem("lowInterval"))
-const wsUri = wsuris.name;
-const websocket = new WebSocket(wsUri);
-const serverPassword = sps.name;
+var ps = JSON.parse(settingsStorage.getItem("PublicServer"))
+var psc = JSON.parse(settingsStorage.getItem("PublicServerCode"))
+var wsUri = null;
+try{wsUri = wsuris.name;}catch{}
+var websocket = null;
+if(ps){websocket = new WebSocket("wss://fitbit.fortnite.lol/?code=" + psc.name);}
+else{websocket = new WebSocket(wsUri);}
+var serverPassword = null;
+try{serverPassword = sps.name;}catch{}
 const generatedPasswordLength = 50;
 
 // to prevent randos from disconnecting your fitbit, the fitbit will create a password
@@ -48,6 +54,9 @@ if(messaging.peerSocket.readyState === messaging.peerSocket.OPEN){
     var object = {"message": "sendInterval", "int": waitInt}
     var message = JSON.stringify(object)
     messaging.peerSocket.send(message)
+    var object2 = {"message": "sendPST", "bool": ps, "code": psc.name}
+    var message2 = JSON.stringify(object2)
+    messaging.peerSocket.send(message2)
 }
 else{
     var theintp2 = setInterval(function(){
@@ -55,6 +64,9 @@ else{
             var object = {"message": "sendInterval", "int": waitInt}
             var message = JSON.stringify(object)
             messaging.peerSocket.send(message)
+            var object2 = {"message": "sendPST", "bool": ps, "code": psc.name}
+            var message2 = JSON.stringify(object2)
+            messaging.peerSocket.send(message2)
             clearInterval(theintp2)
         }
     }, 1000)
@@ -65,7 +77,7 @@ websocket.addEventListener("close", onClose);
 
 function onOpen(evt) {
     console.log("CONNECTED")
-    var sendmessage = {"message": "addFitbit", "serverPassword": serverPassword, "fitbitPassword": password}
+    var sendmessage = {"message": "addFitbit", "serverPassword": serverPassword, "fitbitPassword": password, "code": psc.name}
     var json = JSON.stringify(sendmessage);
     websocket.send(json)
     connected = true;
@@ -90,7 +102,7 @@ function onOpen(evt) {
 
 function onClose() {
     console.log("DISCONNECTED")
-    var sendmessage = {"message": "removeFitbit", "fitbitPassword": password}
+    var sendmessage = {"message": "removeFitbit", "fitbitPassword": password, "code": psc.name}
     var json = JSON.stringify(sendmessage);
     websocket.send(json)
     connected = false;
@@ -119,7 +131,7 @@ setInterval(function(){
     if(connected){
       // we have a connection
       // send the heartrate
-      var sendmessage = {"message": "sendhr", "fitbitPassword": password, "hr": hr}
+      var sendmessage = {"message": "sendhr", "fitbitPassword": password, "hr": hr, "code": psc.name}
       var json = JSON.stringify(sendmessage);
       websocket.send(json)
     }
