@@ -74,9 +74,11 @@ else{
 
 websocket.addEventListener("open", onOpen);
 websocket.addEventListener("close", onClose);
+websocket.addEventListener("ping", heartbeat);
 
 function onOpen(evt) {
     console.log("CONNECTED")
+    heartbeat();
     var sendmessage = {"message": "addFitbit", "serverPassword": serverPassword, "fitbitPassword": password, "code": pscn}
     var json = JSON.stringify(sendmessage);
     websocket.send(json)
@@ -125,10 +127,24 @@ function onClose() {
     }
 }
 
+var pingTimeout = setTimeout(() => {}, 40000)
+
+function heartbeat() {
+  clearTimeout(pingTimeout);
+
+  // Use `WebSocket#terminate()`, which immediately destroys the connection,
+  // instead of `WebSocket#close()`, which waits for the close timer.
+  // Delay should be equal to the interval at which your server
+  // sends out pings plus a conservative assumption of the latency.
+  pingTimeout = setTimeout(() => {
+    websocket.terminate();
+  }, 30000 + 1000);
+}
+
 var loop = 0;
 
 // the interval
-setInterval(function(){
+setInterval(async function(){
     // check connection to the socket
     if(connected){
       // we have a connection
@@ -143,8 +159,8 @@ setInterval(function(){
         }
         if(loop >= 10000){
           console.log("Sent Ping message!")
+          loop = 0;
         }
-        loop = 0;
         lasthr = hr
       }
     }
