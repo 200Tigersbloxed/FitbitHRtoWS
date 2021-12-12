@@ -150,4 +150,4 @@ setInterval(function(){
     websocket.send(json)
     console.log("Sent Ping message!")
   }
-}, 10000)
+}, 5000)

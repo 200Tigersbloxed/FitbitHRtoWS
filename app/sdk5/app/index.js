@@ -6,9 +6,6 @@ const hrm = new HeartRateSensor();
 var StartedInterval = false
 var SendData = false;
 
-// Interval
-var waitInt = "no";
-
 // UI
 let document = require("document");
 
@@ -41,9 +38,6 @@ messaging.peerSocket.onmessage = evt => {
         SendData = false;
         statusLabel.text = "Please Wait..."
       }
-      break;
-    case "sendInterval":
-      waitInt = Number(jsonObject.int)
       break;
     case "sendPST":
       console.log("sendPST: " + jsonObject.bool)
@@ -82,34 +76,38 @@ if (!me.appTimeoutEnabled) {
   console.log("Timeout is disabled");
 }
 
+function SendHRData(hr){
+  // send data to our peer socket
+  if(messaging.peerSocket.readyState === messaging.peerSocket.OPEN){
+    var object = {"message": "sethr", "hr": hr}
+    var message = JSON.stringify(object)
+    messaging.peerSocket.send(message)
+  }
+}
+
 // setup local values
 hrmData.text = "---";
+var lasthr = "0";
 var hr = "0";
 
 var setupInterval = setInterval(function(){
-  if(waitInt != "no" && !StartedInterval){
-    setInterval(async function(){
-      clearInterval(setupInterval);
-      StartedInterval = true;
-      if(HeartRateSensor && SendData){
-        var data = {
-          hrm: {
-            heartRate: hrm.heartRate ? hrm.heartRate : 0
-          }
-        }
-        hr = JSON.stringify(data.hrm.heartRate);
+  StartedInterval = true;
+  if(HeartRateSensor && SendData){
+    var data = {
+      hrm: {
+        heartRate: hrm.heartRate ? hrm.heartRate : 0
       }
-      else{
-        hr = "---";
-      }
-      // set the text
-      hrmData.text = hr;
-      // send data to our peer socket
-      if(messaging.peerSocket.readyState === messaging.peerSocket.OPEN){
-        var object = {"message": "sethr", "hr": hr}
-        var message = JSON.stringify(object)
-        messaging.peerSocket.send(message)
-      }
-    }, waitInt)
+    }
+    lasthr = hr;
+    hr = JSON.stringify(data.hrm.heartRate);
   }
-}, 100)
+  else{
+    hr = "---";
+  }
+  if(lasthr !== hr){
+    // set the text
+    hrmData.text = hr;
+    // send the new HR
+    SendHRData(hr);
+  }
+}, 10)

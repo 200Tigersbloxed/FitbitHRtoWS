@@ -3,9 +3,16 @@ import { settingsStorage } from "settings";
 
 var wsuris = JSON.parse(settingsStorage.getItem("wsUriSettings"))
 var sps = JSON.parse(settingsStorage.getItem("serverPassSettings"))
-var wis = JSON.parse(settingsStorage.getItem("lowInterval"))
 var ps = JSON.parse(settingsStorage.getItem("PublicServer"))
 var psc = JSON.parse(settingsStorage.getItem("PublicServerCode"))
+var pscn = "";
+try{
+  pscn = psc.name;
+}
+catch{
+  ps = false; 
+  pscn = "";
+}
 var wsUri = null;
 try{wsUri = wsuris.name;}catch{}
 var websocket = null;
@@ -29,6 +36,7 @@ var password = generatePassword(generatedPasswordLength)
 
 // web socket value
 var connected = false;
+var lasthr = "---";
 var hr = "---";
 
 // setup messaging for transferring values to companion
@@ -39,6 +47,7 @@ messaging.peerSocket.onmessage = evt => {
     switch(message){
         case "sethr":
             var hrL = jsonObject.hr;
+            lasthr = hr;
             hr = hrL;
             break;
         default:
@@ -47,24 +56,15 @@ messaging.peerSocket.onmessage = evt => {
     }
 }
 
-var waitInt = 1000;
-if(wis){waitInt = 500}
-
 if(messaging.peerSocket.readyState === messaging.peerSocket.OPEN){
-    var object = {"message": "sendInterval", "int": waitInt}
-    var message = JSON.stringify(object)
-    messaging.peerSocket.send(message)
-    var object2 = {"message": "sendPST", "bool": ps, "code": psc.name}
+    var object2 = {"message": "sendPST", "bool": ps, "code": pscn}
     var message2 = JSON.stringify(object2)
     messaging.peerSocket.send(message2)
 }
 else{
     var theintp2 = setInterval(function(){
         if(messaging.peerSocket.readyState === messaging.peerSocket.OPEN){
-            var object = {"message": "sendInterval", "int": waitInt}
-            var message = JSON.stringify(object)
-            messaging.peerSocket.send(message)
-            var object2 = {"message": "sendPST", "bool": ps, "code": psc.name}
+            var object2 = {"message": "sendPST", "bool": ps, "code": pscn}
             var message2 = JSON.stringify(object2)
             messaging.peerSocket.send(message2)
             clearInterval(theintp2)
@@ -77,7 +77,7 @@ websocket.addEventListener("close", onClose);
 
 function onOpen(evt) {
     console.log("CONNECTED")
-    var sendmessage = {"message": "addFitbit", "serverPassword": serverPassword, "fitbitPassword": password, "code": psc.name}
+    var sendmessage = {"message": "addFitbit", "serverPassword": serverPassword, "fitbitPassword": password, "code": pscn}
     var json = JSON.stringify(sendmessage);
     websocket.send(json)
     connected = true;
@@ -96,13 +96,13 @@ function onOpen(evt) {
                 messaging.peerSocket.send(message)
                 clearInterval(theint)
             }
-        }, waitInt)
+        }, 10)
     }
 }
 
 function onClose() {
     console.log("DISCONNECTED")
-    var sendmessage = {"message": "removeFitbit", "fitbitPassword": password, "code": psc.name}
+    var sendmessage = {"message": "removeFitbit", "fitbitPassword": password, "code": pscn}
     var json = JSON.stringify(sendmessage);
     websocket.send(json)
     connected = false;
@@ -121,18 +121,33 @@ function onClose() {
                 messaging.peerSocket.send(message)
                 clearInterval(theint)
             }
-        }, waitInt)
+        }, 10)
     }
 }
 
-// the interval
+// the hr message
 setInterval(function(){
     // check connection to the socket
     if(connected){
       // we have a connection
-      // send the heartrate
-      var sendmessage = {"message": "sendhr", "fitbitPassword": password, "hr": hr, "code": psc.name}
-      var json = JSON.stringify(sendmessage);
-      websocket.send(json)
+      if(hr !== lasthr){
+        // The HR changed, we can send the data
+        var sendmessage = {"message": "sendhr", "fitbitPassword": password, "hr": hr, "code": pscn}
+        var json = JSON.stringify(sendmessage);
+        websocket.send(json)
+        console.log("Sent HR to server! HR: " + hr + " LastHR: " + lasthr)
+        lasthr = hr
+      }
     }
-}, waitInt);
+}, 10);
+
+// the ping message
+setInterval(function(){
+  if(connected){
+    // ping message
+    var sendmessage = {"message": "sendhr", "fitbitPassword": password, "hr": hr, "code": pscn}
+    var json = JSON.stringify(sendmessage);
+    websocket.send(json)
+    console.log("Sent Ping message!")
+  }
+}, 5000)
