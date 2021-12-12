@@ -125,29 +125,28 @@ function onClose() {
     }
 }
 
-// the hr message
+var loop = 0;
+
+// the interval
 setInterval(function(){
     // check connection to the socket
     if(connected){
       // we have a connection
-      if(hr !== lasthr){
-        // The HR changed, we can send the data
+      loop = loop + 10;
+      if(hr !== lasthr || loop >= 10000){
+        // The HR changed or we need to send a ping, we can send the data
         var sendmessage = {"message": "sendhr", "fitbitPassword": password, "hr": hr, "code": pscn}
         var json = JSON.stringify(sendmessage);
         websocket.send(json)
-        console.log("Sent HR to server! HR: " + hr + " LastHR: " + lasthr)
+        if(hr !== lasthr){
+          console.log("Sent HR to server! HR: " + hr + " LastHR: " + lasthr)
+        }
+        if(loop >= 10000){
+          console.log("Sent Ping message!")
+        }
+        loop = 0;
         lasthr = hr
       }
     }
+  else{loop = 0;}
 }, 10);
-
-// the ping message
-setInterval(function(){
-  if(connected){
-    // ping message
-    var sendmessage = {"message": "sendhr", "fitbitPassword": password, "hr": hr, "code": pscn}
-    var json = JSON.stringify(sendmessage);
-    websocket.send(json)
-    console.log("Sent Ping message!")
-  }
-}, 5000)

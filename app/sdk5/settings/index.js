@@ -17,7 +17,7 @@ function MainSettings(props) {
         ></Toggle>
         <TextInput
           settingsKey="PublicServerCode"
-          label="Public Server Code (Letters only!)"
+          label="Public Server Code"
         >CHANGEME</TextInput>
       </Section>
     </Page>
