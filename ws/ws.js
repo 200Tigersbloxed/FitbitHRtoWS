@@ -1,5 +1,6 @@
 var app = require('express')();
 var http = require('http').createServer(app);
+const { Console } = require('console');
 var fs = require('fs');
 var WebSocket = require('ws');
 var password = "CHANGEME";
@@ -30,19 +31,41 @@ module.exports = function(){
     var wss = new WebSocket.Server({ port: config.wsport })
     console.log("WebSocket Server running on *:" + config.wsport);
   
+    var fbPinged = true;
     var fbConnected = false;
     var fbsocket = null;
     var fbPassword = ""
     var hr = "---";
+
+
+    function heartbeat(){
+      fbPinged = true;
+    }
+
+    const interval = setInterval(function ping(){
+      if(fbsocket !== null){
+        if(fbPinged === false) return fbsocket.terminate();
+
+        fbPinged = false;
+        fbsocket.ping();
+      }
+    }, 30000)
   
     wss.on('connection', function connection(ws){
+      ws.on('pong', heartbeat)
+      console.log("Device connected!")
       ws.on('close', function disconnect(){
-        if(ws == fbsocket){
+        if(ws == fbsocket && fbsocket.readyState !== 1){
           fbConnected = false;
           fbsocket = null;
           fbPassword = "";
           hr = "---";
+          console.log("Fitbit closed!")
         }
+        else{
+          console.log("Device closed!")
+        }
+        clearInterval(interval);
       })
     
       ws.on('message', function incoming(data){
@@ -77,12 +100,15 @@ module.exports = function(){
                   var json = JSON.stringify(sendmessage);
                   ws.send(json)
                   fbsocket = ws;
+                  console.log("Fitbit Device Added!")
                 }
                 else{
+                  console.log("Password is incorrect! fbpass = " + fbpass + ", fbspass = " + fbspass)
                   ws.close();
                 }
               }
               else{
+                console.log("Fitbit is already Connected!")
                 ws.close();
               }
               break;
@@ -115,6 +141,9 @@ module.exports = function(){
               else{
                 ws.send("no");
               }
+            default:
+              console.log("Unknown message: " + data)
+              break
           }
         }
       })
