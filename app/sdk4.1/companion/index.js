@@ -127,7 +127,7 @@ function onClose() {
     }
 }
 
-var pingTimeout = setTimeout(() => {}, 40000)
+var pingTimeout;
 
 function heartbeat() {
   clearTimeout(pingTimeout);
@@ -137,8 +137,10 @@ function heartbeat() {
   // Delay should be equal to the interval at which your server
   // sends out pings plus a conservative assumption of the latency.
   pingTimeout = setTimeout(() => {
-    websocket.terminate();
-  }, 30000 + 1000);
+    if(!connected){
+      websocket.terminate();
+    }
+  }, 30000 + 5000);
 }
 
 var loop = 0;

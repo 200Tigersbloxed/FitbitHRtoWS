@@ -104,9 +104,9 @@ var setupInterval = setInterval(function(){
   else{
     hr = "---";
   }
+  // set the text
+  hrmData.text = hr;
   if(lasthr !== hr){
-    // set the text
-    hrmData.text = hr;
     // send the new HR
     SendHRData(hr);
   }
