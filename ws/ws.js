@@ -141,6 +141,7 @@ module.exports = function(){
               else{
                 ws.send("no");
               }
+              break
             default:
               console.log("Unknown message: " + data)
               break
