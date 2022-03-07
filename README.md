@@ -17,11 +17,11 @@ Below is a table of device support
 
 SDK | Device | Tested | Working
 --- | --- | --- | ---
-SDK4 | Fitbit Ionic | ❌ | `-` *(SDK >=4.1.0)*
+SDK4 | Fitbit Ionic | ✔️ | ✔️ *(SDK >=4.1.0)*
 SDK4 | Fitbit Versa | ❌ | `-` *(SDK >=4.1.0)*
 SDK4 | Fitbit Versa Lite | ❌ | `-` *(SDK >=4.1.0)*
 SDK4 | Fitbit Versa 2 | ✔️ | ✔️ *(SDK >=4.1.0)*
-SDK5 | Fitbit Versa 3 | ❌ | `-` *(SDK 5.0)*
+SDK5 | Fitbit Versa 3 | ✔️ | ✔️ *(SDK 5.0)*
 SDK5 | Fitbit Sense | ❌ | `-` *(SDK 5.0)*
 
 *Just because a device isn't tested, doesn't mean it won't work. Feel free to test and submit a PR if you've confirmed a device to work.*
